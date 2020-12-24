@@ -14,6 +14,10 @@ from pathlib import Path
 import pickle
 
 import pathlib
+import torch
+# torch.cuda.device("cpu")
+
+
 
 # from emotion.ipynb import *
 pathlib.PosixPath = pathlib.WindowsPath
@@ -35,10 +39,11 @@ pathlib.PosixPath = pathlib.WindowsPath
 
 objects = ['angry', 'disgust', 'fear', 'happy', 'sad', 'surprise', 'neutral']
 
-learn=load_learner('export.pkl')
+learn=load_learner('export.pkl',cpu=True)
+# learn=learn.model.cpu()
+# learn=learn.dls.cpu()
+# learn.model.to('cpu')
 
-learn.dls.device = 'cpu'
-learn.model.to('cpu')
 
 class face_detector(object):
 
@@ -73,9 +78,10 @@ class face_detector(object):
 
 				p=torch.argmax(pred[0])
 
-				text=obects[p.item()]
+				text=objects[p.item()]
+				print(text)
 
-				cv2.putText(image,text , (5,13) , cv2.FONT_HERSHEY_SIMPLEX, scale, (255,0,255),1)
+				cv2.putText(image,text , (x,y),(x+w+5,y+h) , cv2.FONT_HERSHEY_SIMPLEX, 1, (255,0,255),1)
 
 
 			cv2.imshow("img",image)

@@ -70,9 +70,10 @@ class face_detector(object):
 				roi=image[y:y+h,x:x+w]
 				roi = cv2.cvtColor(roi, cv2.COLOR_BGR2RGB)
 				gray = cv2.cvtColor(roi, cv2.COLOR_RGB2GRAY)
+				gray=cv2.resize(gray,(48,48), interpolation =cv2.INTER_AREA)
 				im_pil = Image.fromarray(gray)
 				img=PILImage(im_pil)
-
+				# img=img.resize((28,28))
 				k=EmotionImage(img)
 				pred=learn.predict(k)
 
@@ -81,7 +82,7 @@ class face_detector(object):
 				text=objects[p.item()]
 				print(text)
 
-				cv2.putText(image,text , (x,y),(x+w+5,y+h) , cv2.FONT_HERSHEY_SIMPLEX, 1, (255,0,255),1)
+				cv2.putText(image,text , (15,20) , cv2.FONT_HERSHEY_SIMPLEX, 1, (255,0,255),1)
 
 
 			cv2.imshow("img",image)
